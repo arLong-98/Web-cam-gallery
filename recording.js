@@ -18,7 +18,6 @@ function toggleRecording() {
     // register on start event
     currentMediaRecorder.onstart = () => {
       // do something when recording has started
-      startTimer();
       RECORDING_STATE.isRecording = true;
       updateRecordButtonState();
     };
@@ -26,22 +25,30 @@ function toggleRecording() {
     //register on stop event
     currentMediaRecorder.onstop = () => {
       //do something when recording has stopped
-      stopTimer();
       RECORDING_STATE.isRecording = false;
       updateRecordButtonState();
       //convert data chunks to blob
       let blob = new Blob(data, { type: "video/mp4" });
-      const videoUrl = URL.createObjectURL(blob);
+
+      if (DB.db) {
+        let dbTransaction = DB.db.transaction("video", "readwrite");
+        let videoStore = dbTransaction.objectStore("video");
+        const videoEntry = {
+          id: generateFileName("recording"),
+          blobData: blob,
+        };
+
+        videoStore.add(videoEntry);
+      }
+      //   const videoUrl = URL.createObjectURL(blob);
 
       //download video
-      const anchorEle = document.createElement("a");
-      anchorEle.href = videoUrl;
-      anchorEle.download = "stream.mp4";
-      anchorEle.click();
+      //   downloadUrl(videoUrl, generateFileName("recording"));
     };
-
+    startTimer();
     currentMediaRecorder.start(); // start recording data in a blob
   } else {
+    stopTimer();
     currentMediaRecorder.stop();
   }
 }

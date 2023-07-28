@@ -7,6 +7,8 @@ const RECORDING_STATE = {
 
 const VIDEO_ELEMENT = document.querySelector("#video"); // video element is used to recive the stream from web cam
 const TIMER_ELEMENT = document.querySelector(".timer");
+const FILTER_CONTAINER = document.querySelector(".filter-container");
+const FILTER_LAYER = document.querySelector("#filter-layer");
 
 getAccessToUserMedia();
 
@@ -61,3 +63,43 @@ function stopTimer() {
   TIMER_ELEMENT.innerHTML = "00:00:00";
   clearInterval(RECORDING_STATE.timerId);
 }
+
+function generateFileName(type) {
+  const currentDate = new Date();
+  let fileNameString = `${currentDate.getDay()}_${currentDate.getMonth()}_${currentDate.getFullYear()}_${currentDate.getHours()}_${currentDate.getMinutes()}_${currentDate.getMilliseconds()}`;
+
+  if (type === "recording") {
+    return `${type}_${fileNameString}.mp4`;
+  }
+
+  if (type === "photo") {
+    return `${type}_${fileNameString}.jpeg`;
+  }
+
+  return "stream";
+}
+
+function downloadUrl(url, name) {
+  const anchorEle = document.createElement("a");
+  anchorEle.href = url;
+  anchorEle.download = name;
+  anchorEle.click();
+}
+
+FILTER_CONTAINER.addEventListener("click", (event) => {
+  const targetedElement = event.target;
+
+  const targetClassList = targetedElement.classList;
+
+  // this filter layer is used for the ui
+  // we will fill the canvas with color to apply the required filter color on our recorded video/captured photo
+  if (targetClassList.contains("yellow")) {
+    FILTER_LAYER.setAttribute("class", "yellow");
+  } else if (targetClassList.contains("pink")) {
+    FILTER_LAYER.setAttribute("class", "pink");
+  } else if (targetClassList.contains("brown")) {
+    FILTER_LAYER.setAttribute("class", "brown");
+  } else if (targetClassList.contains("transparent")) {
+    FILTER_LAYER.setAttribute("class", "transparent");
+  }
+});
