@@ -3,6 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="styles.css" />
     <title>Camera Gallery</title>
   </head>
@@ -10,6 +14,7 @@
     <div class="app-container">
       <div class="video-container">
         <video muted autoplay id="video"></video>
+        <div id="filter-layer"></div>
       </div>
       <div class="action-buttons-container">
         <div class="timer-container">
@@ -22,8 +27,31 @@
           <button class="action-button capture-button"></button>
         </div>
       </div>
+      <div class="filter-container">
+        <div class="filter yellow"></div>
+        <div class="filter brown"></div>
+        <div class="filter pink"></div>
+        <div class="filter transparent"></div>
+      </div>
+      <div class="gallery-button-container">
+        <button class="gallery-button">
+          <span class="material-icons gallery-icon"> photo_library </span>
+        </button>
+      </div>
+      <canvas id="hidden-canvas">
+        <!-- using this to draw images on from the stream -->
+      </canvas>
     </div>
+
+    <!-- <script src="./db.js"></script>
     <script src="./script.js"></script>
     <script src="./recording.js"></script>
+    <script src="./capture.js"></script> -->
+    <script>
+      const galleryButton = document.querySelector(".gallery-button");
+      galleryButton.addEventListener("click", () => {
+        window.location.assign("./gallery.html");
+      });
+    </script>
   </body>
 </html>
