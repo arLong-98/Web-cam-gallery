@@ -29,7 +29,7 @@ function loadGallery() {
       videoResult.forEach(({ id, blobData }) => {
         // id is the filename
         //will use this id to identify the file
-        const mediaCard = createMediaCard("recording", element);
+        const mediaCard = createMediaCard("recording");
         mediaCard.setAttribute("id", id);
         mediaCard.querySelector(".asset").src = URL.createObjectURL(blobData);
         ASSET_CONTAINER.appendChild(mediaCard);
