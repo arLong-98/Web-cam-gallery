@@ -1,4 +1,3 @@
-console.log("hello from gallery");
 DB.registerListener(loadGallery);
 
 const ASSET_CONTAINER = document.querySelector(".asset-container");
@@ -13,6 +12,17 @@ ASSET_CONTAINER.addEventListener("click", function handleClick(e) {
   }
 
   if (e.target.classList.contains("delete")) {
+    if (asset.tagName === "VIDEO") {
+      const videoTransaction = DB.db.transaction("video", "readwrite");
+      const videoStore = videoTransaction.objectStore("video");
+      videoStore.delete(fileId);
+    } else if (asset.tagName === "IMG") {
+      const imageTransaction = DB.db.transaction("image", "readwrite");
+      const imageStore = imageTransaction.objectStore("image");
+      imageStore.delete(fileId);
+    }
+
+    parentNode.remove();
   }
 });
 
@@ -66,8 +76,8 @@ function createMediaCard(type) {
 
   mediaCard.innerHTML = `
     ${assetTag}
-    <button class="action-btn download" >DOWNLOAD</button>
-    <button class="action-btn delete" >DELETE</button>
+    <button class="action-btn download">DOWNLOAD</button>
+    <button class="action-btn delete">DELETE</button>
 
   `;
 

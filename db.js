@@ -10,8 +10,10 @@ const DB = {
   get db() {
     return this.internalDb;
   },
+
   registerListener: function (callback) {
     this.dbListener = callback;
+    this.dbListener();
   },
 };
 
